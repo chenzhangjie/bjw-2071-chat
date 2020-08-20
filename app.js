@@ -13,12 +13,16 @@ const logger = require('koa-logger')
 const debug = require('debug')('koa2:server')
 const path = require('path')
 
+const nunjucksEnv = require('nunjucks')
+
 const config = require('./config')
 const routes = require('./routes')
 
+const port = process.env.PORT || config.port
+
 const { initConnection } = require('./models/connection')
 
-const port = process.env.PORT || config.port
+const { formatTime } = require('./common/utils')
 
 // error handler
 onerror(app)
@@ -26,17 +30,38 @@ onerror(app)
 initConnection()
 
 // middlewares
+// app.use(bodyparser())
+//   .use(json())
+//   .use(logger())
+//   .use(require('koa-static')(__dirname + '/public'))
+//   .use(views(path.join(__dirname, '/views'), {
+//     options: {settings: {views: path.join(__dirname, 'views')}},
+//     map: {'njk': 'nunjucks'},
+//     extension: 'njk'
+//   }))
+//   .use(router.routes())
+//   .use(router.allowedMethods())
+
+
+// middlewares
 app.use(bodyparser())
   .use(json())
   .use(logger())
   .use(require('koa-static')(__dirname + '/public'))
   .use(views(path.join(__dirname, '/views'), {
-    options: {settings: {views: path.join(__dirname, 'views')}},
+    options: { nunjucksEnv },
     map: {'njk': 'nunjucks'},
     extension: 'njk'
   }))
   .use(router.routes())
   .use(router.allowedMethods())
+
+nunjucksEnv.configure(path.join(__dirname, '/views'),{
+
+  trimBlocks: true,
+  lstripBlocks: true
+}).addFilter('formatTime',formatTime)
+
 
 // logger
 app.use(async (ctx, next) => {
@@ -46,14 +71,17 @@ app.use(async (ctx, next) => {
   console.log(`${ctx.method} ${ctx.url} - $ms`)
 })
 
-router.get('/', async (ctx, next) => {
-  // ctx.body = 'Hello World'
-  ctx.state = {
-    title: 'Koa2'
-  }
-  await ctx.render('index', ctx.state)
-})
+// router.get('/', async (ctx, next) => {
+//   // ctx.body = 'Hello World'
+//   ctx.state = {
+//     title: 'Koa2'
+//   }
+//   await ctx.render('index', ctx.state)
+// })
 
+/* 
+ * 路由
+*/
 routes(router)
 app.on('error', function(err, ctx) {
   console.log(err)

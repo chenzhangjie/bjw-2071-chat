@@ -1,0 +1,51 @@
+{% extends 'layout.njk' %}
+
+{% block content %}
+
+    <div class = 'chat-container'>
+
+        {# 用户名 #}
+        <div class = 'chat-header'>
+            {{ nickName }}
+        </div>
+
+        {# 聊天主体 #}
+        <div class = 'chat-content'>
+            {% for item in contents %}
+                <div class = 'chat-content-container'>
+                    <div class = 'chat-detail clearFix'>
+
+                        {# 左侧，用户信息 #}
+                        <div class = 'chat-detail-left'>
+                            <img src = '{{ item.avatar }}' class = 'chat-avatar'/>
+                            <div class = 'chat-name'>{{ item.nickName }}</div>
+                        </div>
+                        
+                        {# 右侧，聊天内容 #}
+                        <div class = 'chat-detail-right'>
+                            {{ item.content }}
+                        </div>
+                    </div>
+
+                    {# 时间 #}
+                    <div class = 'chat-time'>{{ item.createdAt | formatTime}}</div>
+                </div>
+            {% endfor %}
+        </div>
+
+        {# 输入 #}
+        <div class = 'chat-input-container'>
+            <i class = "fa fa-smile-o fa-3x chat-input-smile"></i>
+            <input placeholder = '信息输入....' class = 'chat-input' value = ''/>
+        </div>
+
+    </div>
+{% endblock %}
+
+{% block style %} 
+    <link rel='stylesheet', href='/css/chat.css'>
+{% endblock %}
+
+{% block script %}
+    <script src='/js/chat.js'></script>
+{% endblock %}

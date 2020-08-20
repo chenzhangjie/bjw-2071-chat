@@ -1,10 +1,16 @@
+const controller = require('../controller/chat')
+
 module.exports =  (router) => {
-  router.get('/welcome', async function (ctx, next) {
-    ctx.state = {
-      title: 'koa2 title'
-    }
-  
-    await ctx.render('index', {title: ctx.state})
-  })
+  router.get('/',controller.login)
+
+  router.post('/chat/login',controller.chatLogin)
+
+  router.get('/chat',controller.chat)
+
+  router.post('/chat/addContent',controller.addContent)
+
+  router.get('/chat/getContent',controller.getContent)
+
 }
   
+
