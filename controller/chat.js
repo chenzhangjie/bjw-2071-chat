@@ -98,10 +98,12 @@ async function getContent(ctx,next){
   }
 }
 
+
+
 module.exports = {
   login,
   chatLogin,
   chat,
   addContent,
-  getContent
+  getContent,
 }

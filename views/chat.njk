@@ -13,6 +13,7 @@
         <div class = 'chat-content'>
             {% for item in contents %}
                 <div class = 'chat-content-container'>
+
                     <div class = 'chat-detail clearFix'>
 
                         {# 左侧，用户信息 #}
@@ -20,7 +21,7 @@
                             <img src = '{{ item.avatar }}' class = 'chat-avatar'/>
                             <div class = 'chat-name'>{{ item.nickName }}</div>
                         </div>
-                        
+
                         {# 右侧，聊天内容 #}
                         <div class = 'chat-detail-right'>
                             {{ item.content }}
@@ -33,11 +34,18 @@
             {% endfor %}
         </div>
 
+        {# 新消息提醒 #}
+        <div class="chat-message-reminder">
+            新消息
+            <button class = 'chat-confirmBtn'>确认</button>
+        </div>
+
         {# 输入 #}
         <div class = 'chat-input-container'>
             <i class = "fa fa-smile-o fa-3x chat-input-smile"></i>
             <input placeholder = '信息输入....' class = 'chat-input' value = ''/>
         </div>
+
 
     </div>
 {% endblock %}

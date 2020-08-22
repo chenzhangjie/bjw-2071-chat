@@ -21,7 +21,8 @@ async function getContent(){
   })
 }
 
+
 module.exports = {
   addContent,
-  getContent
+  getContent,
 }

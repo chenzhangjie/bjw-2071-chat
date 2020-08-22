@@ -85,3 +85,23 @@
 .chat-time{
     color:#BDBDBD;
 }
+
+.chat-message-reminder{
+    left:600px;
+    position: absolute;
+    top:100px;
+    height: 55px;
+    width: 200px;
+    background-color: rgb(221, 230, 211);
+    color: rgb(240, 124, 57);
+    text-align: center;
+    display: none;
+    border: 1px solid black;
+
+}
+
+.chat-confirmBtn{
+    display: block;
+    margin: 0 auto;
+
+}

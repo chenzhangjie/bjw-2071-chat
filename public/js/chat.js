@@ -1,5 +1,10 @@
 let inputEle = document.getElementsByClassName('chat-input')[0]
+let newsEle = document.getElementsByClassName('chat-message-reminder')[0]
+let newsBtn = document.getElementsByClassName('chat-confirmBtn')[0]
 let timer
+let originData
+
+newMessage()
 
 stopTimer()
 
@@ -30,6 +35,9 @@ inputEle.onkeydown = function(e){
             renderChat(result.contents)
 
             inputEle.value = ''
+
+            originData = result.contents
+
             scrollToBottom()
           } 
         }
@@ -63,6 +71,8 @@ function renderChat(contents){
 
   //重新渲染
   $('.chat-content').html(html)
+
+
 }
 
 function scrollToBottom(){
@@ -74,9 +84,8 @@ function scrollToBottom(){
 
 }
 
-//长轮询
+//长轮询 每隔2s向数据库查询
 function longPolling(){
-
   timer = setInterval(()=>{
 
     $.ajax({
@@ -86,6 +95,21 @@ function longPolling(){
       success:(result)=>{
 
         renderChat(result.contents)
+
+        result.contents.filter((item)=>{
+
+          let flag = moment(originData[originData.length-1].createdAt).isBefore(moment(item.createdAt))
+          // let nows = item.createdAt
+          // let originDatas = originData[originData.length - 1].createdAt
+          if(flag){
+
+            // console.log('新消息')
+            newsEle.style.display = 'block'
+            
+          }
+      
+      
+        })
 
       }
     })
@@ -98,4 +122,22 @@ function stopTimer(){
     
     clearInterval(timer)
   }
+}
+
+function newMessage(){
+
+  $.ajax({
+    type:'get',
+    url:'http://localhost:3000/chat/getContent',
+    data:{},
+    success:(result)=>{
+      originData = result.contents
+    }
+  })
+
+}
+
+newsBtn.onclick=function(){
+  newsEle.style.display = 'none'
+  newMessage()
 }
